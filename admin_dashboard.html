@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>Admin Dashboard</title>
+<style>
+  body { font-family: Arial, sans-serif; background: #f7f9fc; margin: 0; padding: 30px; }
+  h1 { color: #1f6feb; }
+  .cards { display: flex; gap: 16px; margin: 20px 0; flex-wrap: wrap; }
+  .stat { background: #fff; border-radius: 10px; padding: 18px 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); min-width: 160px; }
+  .stat .num { font-size: 26px; font-weight: bold; color: #1f6feb; }
+  .stat .label { font-size: 13px; color: #666; }
+  table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 10px; overflow: hidden; margin-top: 10px; }
+  th, td { text-align: left; padding: 10px 14px; font-size: 13px; border-bottom: 1px solid #eee; }
+  th { background: #f1f3f6; }
+  nav a { margin-right: 16px; color: #1f6feb; text-decoration: none; font-size: 14px; }
+  .escalated { color: #b00020; font-weight: bold; }
+</style>
+</head>
+<body>
+  <nav><a href="{{ url_for('admin.dashboard') }}">Dashboard</a><a href="{{ url_for('admin.kb_list') }}">Knowledge Base</a><a href="{{ url_for('admin.logout') }}">Logout</a></nav>
+  <h1>Admin Dashboard</h1>
+  <div class="cards">
+    <div class="stat"><div class="num">{{ total_interactions }}</div><div class="label">Total Interactions</div></div>
+    <div class="stat"><div class="num">{{ escalated }}</div><div class="label">Escalated to Human</div></div>
+    <div class="stat"><div class="num">{{ kb_count }}</div><div class="label">Knowledge Base Entries</div></div>
+    <div class="stat"><div class="num">{{ avg_rating or '—' }}</div><div class="label">Average Rating</div></div>
+  </div>
+  <h3>Recent Interactions</h3>
+  <table>
+    <tr><th>Time</th><th>Query</th><th>Intent</th><th>Confidence</th><th>Escalated</th><th>Rating</th></tr>
+    {% for r in recent %}
+    <tr>
+      <td>{{ r.timestamp.strftime('%Y-%m-%d %H:%M') }}</td>
+      <td>{{ r.query_text }}</td>
+      <td>{{ r.intent_label or '—' }}</td>
+      <td>{{ '%.2f'|format(r.confidence_score) if r.confidence_score is not none else '—' }}</td>
+      <td class="{{ 'escalated' if r.escalated else '' }}">{{ 'Yes' if r.escalated else 'No' }}</td>
+      <td>{{ r.user_rating or '—' }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</body>
+</html>

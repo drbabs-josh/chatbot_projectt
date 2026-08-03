@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Customer Support Assistant</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="phone">
+    <div class="header">
+      <div class="avatar">AI</div>
+      <div>
+        <div class="title">Customer Support Assistant</div>
+        <div class="status"><span class="dot"></span> Online</div>
+      </div>
+    </div>
+    <div class="messages" id="messages">
+      <div class="msg-row bot">
+        <div class="bubble">Hello! 👋 I'm your virtual support assistant. How can I help you today?</div>
+      </div>
+    </div>
+    <div class="input-bar">
+      <input type="text" id="userInput" class="input-box" placeholder="Type your message…" autocomplete="off">
+      <button id="sendBtn" class="send-btn">➤</button>
+    </div>
+  </div>
+  <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+</body>
+</html>
